@@ -1,9 +1,11 @@
+
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { EnvironmentHeader } from "./EnvironmentHeader";
 import { NameInput } from "./NameInput";
 import { ZoneSelect } from "./ZoneSelect";
 import { ResourceSlider } from "./ResourceSlider";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 interface EnvironmentFormData {
   name: string;
@@ -14,10 +16,12 @@ interface EnvironmentFormData {
 }
 
 interface CreateEnvironmentProps {
+  isOpen: boolean;
   onClose: () => void;
 }
 
 export const CreateEnvironment: React.FC<CreateEnvironmentProps> = ({
+  isOpen,
   onClose,
 }) => {
   const { register, handleSubmit, setValue, watch } =
@@ -35,11 +39,14 @@ export const CreateEnvironment: React.FC<CreateEnvironmentProps> = ({
 
   const onSubmit = (data: EnvironmentFormData) => {
     console.log("Form submitted:", { ...data, isProduction });
+    // Close the popup after submission
+    onClose();
   };
 
+  // Return a standalone popup component that can be easily ported to Angular
   return (
-    <div className="bg-white max-w-[480px] w-full overflow-hidden mx-auto rounded-lg border-[rgba(206,212,218,1)] border-solid border-2">
-      <div className="w-full">
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="max-w-[480px] p-0 border-[rgba(206,212,218,1)] border-2">
         <div className="bg-gray-50 min-h-[844px] w-full pt-4 pb-[215px] px-4">
           <EnvironmentHeader onClose={onClose} />
 
@@ -99,7 +106,7 @@ export const CreateEnvironment: React.FC<CreateEnvironmentProps> = ({
             </button>
           </form>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 };

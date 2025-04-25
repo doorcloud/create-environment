@@ -5,7 +5,8 @@ import { EnvironmentHeader } from "./EnvironmentHeader";
 import { NameInput } from "./NameInput";
 import { ZoneSelect } from "./ZoneSelect";
 import { ResourceSlider } from "./ResourceSlider";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface EnvironmentFormData {
   name: string;
@@ -46,66 +47,69 @@ export const CreateEnvironment: React.FC<CreateEnvironmentProps> = ({
   // Return a standalone popup component that can be easily ported to Angular
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-[480px] p-0 border-[rgba(206,212,218,1)] border-2">
-        <div className="bg-gray-50 min-h-[844px] w-full pt-4 pb-[215px] px-4">
-          <EnvironmentHeader onClose={onClose} />
+      <DialogContent className="max-w-[480px] p-0 border-[rgba(206,212,218,1)] border-2 max-h-[90vh] overflow-hidden">
+        <DialogTitle className="sr-only">Create New Environment</DialogTitle>
+        <ScrollArea className="max-h-[80vh]">
+          <div className="bg-gray-50 w-full pt-4 pb-6 px-4">
+            <EnvironmentHeader onClose={onClose} />
 
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="w-full max-w-[358px] mt-8"
-          >
-            <NameInput
-              value={watch("name")}
-              onChange={(value) => setValue("name", value)}
-              isProduction={isProduction}
-              onProductionChange={setIsProduction}
-            />
-
-            <div className="mt-6">
-              <ZoneSelect
-                value={watch("zone")}
-                onChange={(value) => setValue("zone", value)}
-              />
-            </div>
-
-            <div className="mt-6">
-              <ResourceSlider
-                label="Memory"
-                value={watch("memory")}
-                onChange={(value) => setValue("memory", value)}
-                max={16}
-                unit="Gi"
-              />
-            </div>
-
-            <div className="mt-6">
-              <ResourceSlider
-                label="CPU"
-                value={watch("cpu")}
-                onChange={(value) => setValue("cpu", value)}
-                max={4}
-                unit="core"
-              />
-            </div>
-
-            <div className="mt-6">
-              <ResourceSlider
-                label="Storage"
-                value={watch("storage")}
-                onChange={(value) => setValue("storage", value)}
-                max={100}
-                unit="Gi"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="w-full bg-emerald-500 text-base text-white font-normal text-center mt-6 px-[153px] py-3.5 rounded-lg hover:bg-emerald-600 transition-colors"
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="w-full max-w-[358px] mt-8 mx-auto"
             >
-              Create
-            </button>
-          </form>
-        </div>
+              <NameInput
+                value={watch("name")}
+                onChange={(value) => setValue("name", value)}
+                isProduction={isProduction}
+                onProductionChange={setIsProduction}
+              />
+
+              <div className="mt-6">
+                <ZoneSelect
+                  value={watch("zone")}
+                  onChange={(value) => setValue("zone", value)}
+                />
+              </div>
+
+              <div className="mt-6">
+                <ResourceSlider
+                  label="Memory"
+                  value={watch("memory")}
+                  onChange={(value) => setValue("memory", value)}
+                  max={16}
+                  unit="Gi"
+                />
+              </div>
+
+              <div className="mt-6">
+                <ResourceSlider
+                  label="CPU"
+                  value={watch("cpu")}
+                  onChange={(value) => setValue("cpu", value)}
+                  max={4}
+                  unit="core"
+                />
+              </div>
+
+              <div className="mt-6">
+                <ResourceSlider
+                  label="Storage"
+                  value={watch("storage")}
+                  onChange={(value) => setValue("storage", value)}
+                  max={100}
+                  unit="Gi"
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-emerald-500 text-base text-white font-normal text-center mt-6 px-[153px] py-3.5 rounded-lg hover:bg-emerald-600 transition-colors"
+              >
+                Create
+              </button>
+            </form>
+          </div>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );

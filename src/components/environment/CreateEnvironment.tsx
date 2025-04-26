@@ -5,7 +5,7 @@ import { EnvironmentHeader } from "./EnvironmentHeader";
 import { NameInput } from "./NameInput";
 import { ZoneSelect } from "./ZoneSelect";
 import { ResourceSlider } from "./ResourceSlider";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface EnvironmentFormData {
@@ -40,16 +40,13 @@ export const CreateEnvironment: React.FC<CreateEnvironmentProps> = ({
 
   const onSubmit = (data: EnvironmentFormData) => {
     console.log("Form submitted:", { ...data, isProduction });
-    // Close the popup after submission
     onClose();
   };
 
-  // Return a standalone popup component that can be easily ported to Angular
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-[480px] p-0 border-[rgba(206,212,218,1)] border-2 max-h-[90vh] overflow-hidden">
-        <DialogTitle className="sr-only">Create New Environment</DialogTitle>
-        <ScrollArea className="max-h-[80vh]">
+    <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <SheetContent side="right" className="w-[480px] p-0 border-[rgba(206,212,218,1)] border-2">
+        <ScrollArea className="h-full">
           <div className="bg-gray-50 w-full pt-4 pb-6 px-4">
             <EnvironmentHeader onClose={onClose} />
 
@@ -110,7 +107,7 @@ export const CreateEnvironment: React.FC<CreateEnvironmentProps> = ({
             </form>
           </div>
         </ScrollArea>
-      </DialogContent>
-    </Dialog>
+      </SheetContent>
+    </Sheet>
   );
 };

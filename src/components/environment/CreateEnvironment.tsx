@@ -7,10 +7,18 @@ import { ZoneSelect } from "./ZoneSelect";
 import { ResourceSlider } from "./ResourceSlider";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface EnvironmentFormData {
   name: string;
   zone: string;
+  projectId: string;
   memory: number;
   cpu: number;
   storage: number;
@@ -30,6 +38,7 @@ export const CreateEnvironment: React.FC<CreateEnvironmentProps> = ({
       defaultValues: {
         name: "",
         zone: "",
+        projectId: "",
         memory: 0,
         cpu: 0,
         storage: 0,
@@ -43,6 +52,13 @@ export const CreateEnvironment: React.FC<CreateEnvironmentProps> = ({
     onClose();
   };
 
+  // Mock projects data - in a real app, this would come from an API
+  const projects = [
+    { id: "1", name: "Project A" },
+    { id: "2", name: "Project B" },
+    { id: "3", name: "Project C" },
+  ];
+
   return (
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <SheetContent side="right" className="w-[480px] p-0 border-[rgba(206,212,218,1)] border-2">
@@ -54,6 +70,28 @@ export const CreateEnvironment: React.FC<CreateEnvironmentProps> = ({
               onSubmit={handleSubmit(onSubmit)}
               className="w-full max-w-[358px] mt-8 mx-auto"
             >
+              <div className="w-full mb-6">
+                <div className="flex gap-[3px] text-base font-normal whitespace-nowrap pt-0.5 pb-2.5">
+                  <span className="text-blue-600">Project</span>
+                  <span className="text-red-500 leading-none">*</span>
+                </div>
+                <Select
+                  value={watch("projectId")}
+                  onValueChange={(value) => setValue("projectId", value)}
+                >
+                  <SelectTrigger className="w-full h-[50px] bg-white border-blue-200">
+                    <SelectValue placeholder="Select a project" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {projects.map((project) => (
+                      <SelectItem key={project.id} value={project.id}>
+                        {project.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
               <NameInput
                 value={watch("name")}
                 onChange={(value) => setValue("name", value)}
